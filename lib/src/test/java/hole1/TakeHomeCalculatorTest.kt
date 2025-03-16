@@ -1,23 +1,28 @@
-package hole1;
+package hole1
 
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertThrows
+import org.junit.jupiter.api.Test
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
-public class TakeHomeCalculatorTest {
-
+class TakeHomeCalculatorTest {
     @Test
-    public void canCalculateTax() throws Exception {
-        Integer first = new TakeHomeCalculator(10).netAmount(new TakeHomeCalculator.Pair<>(40, "GBP"), new TakeHomeCalculator.Pair<>(50, "GBP"), new TakeHomeCalculator.Pair<>(60, "GBP")).first;
-        assertEquals(135, first.intValue());
+    fun canCalculateTax() {
+        val first = TakeHomeCalculator(10).netAmount(
+            TakeHomeCalculator.Pair(40, "GBP"),
+            TakeHomeCalculator.Pair(50, "GBP"),
+            TakeHomeCalculator.Pair(60, "GBP")
+        ).first
+        assertEquals(135, first)
     }
 
     @Test
-    public void cannotSumDifferentCurrencies() throws Exception {
-        assertThrows(Incalculable.class, () -> {
-            new TakeHomeCalculator(10).netAmount(new TakeHomeCalculator.Pair<>(4, "GBP"), new TakeHomeCalculator.Pair<>(5, "USD"));
-        });
+    fun cannotSumDifferentCurrencies() {
+        assertThrows(Incalculable::class.java) {
+            TakeHomeCalculator(10).netAmount(
+                TakeHomeCalculator.Pair(4, "GBP"),
+                TakeHomeCalculator.Pair(5, "USD")
+            )
+        }
     }
 }
 

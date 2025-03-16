@@ -1,5 +1,3 @@
-package hole6;
+package hole6
 
-public class Incalculable extends RuntimeException {
-
-}
+class Incalculable : RuntimeException()

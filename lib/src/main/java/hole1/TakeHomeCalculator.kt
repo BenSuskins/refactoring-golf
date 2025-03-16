@@ -1,50 +1,30 @@
-package hole1;
+package hole1
 
-import java.util.Arrays;
-import java.util.List;
+class TakeHomeCalculator(private val percent: Int) {
+    fun netAmount(first: Pair<Int, String>, vararg rest: Pair<Int, String>): Pair<Int, String> {
+        val pairs = listOf(*rest)
 
-class TakeHomeCalculator {
+        var total = first
 
-    private final int percent;
-
-    TakeHomeCalculator(int percent) {
-        this.percent = percent;
-    }
-
-    Pair<Integer, String> netAmount(Pair<Integer, String> first, Pair<Integer, String>... rest) {
-
-        List<Pair<Integer, String>> pairs = Arrays.asList(rest);
-
-        Pair<Integer, String> total = first;
-
-        for (Pair<Integer, String> next : pairs) {
-            if (next.second != total.second) {
-                throw new Incalculable();
+        for (next in pairs) {
+            if (next.second !== total.second) {
+                throw Incalculable()
             }
         }
 
-        for (Pair<Integer, String> next : pairs) {
-            total = new Pair<>(total.first + next.first, next.second);
+        for (next in pairs) {
+            total = Pair(total.first + next.first, next.second)
         }
 
-        Double amount = total.first * (percent / 100d);
-        Pair<Integer, String> tax = new Pair<>(amount.intValue(), first.second);
+        val amount = total.first * (percent / 100.0)
+        val tax = Pair(amount.toInt(), first.second)
 
-        if (total.second == tax.second) {
-            return new Pair<>(total.first - tax.first, first.second);
+        if (total.second === tax.second) {
+            return Pair(total.first - tax.first, first.second)
         } else {
-            throw new Incalculable();
+            throw Incalculable()
         }
     }
 
-    static class Pair<A, B> {
-        final A first;
-        final B second;
-
-        Pair(A first, B second) {
-            this.first = first;
-            this.second = second;
-        }
-
-    }
+    class Pair<A, B>(val first: A, val second: B)
 }

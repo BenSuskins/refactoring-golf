@@ -1,24 +1,14 @@
-package hole6;
+package hole6
 
-import static hole6.Money.money;
-
-public class TaxRate {
-    private final int percent;
-
-    private TaxRate(int percent) {
-        this.percent = percent;
+class TaxRate private constructor(private val percent: Int) {
+    fun apply(total: Money): Money {
+        val amount = total.value * (percent / 100.0)
+        return Money.money(amount.toInt(), total.currency)
     }
 
-    public static TaxRate taxRate(int percent) {
-        return new TaxRate(percent);
-    }
-
-    public int getPercent() {
-        return percent;
-    }
-
-    Money apply(Money total) {
-        Double amount = total.value * (getPercent() / 100d);
-        return money(amount.intValue(), total.currency);
+    companion object {
+        fun taxRate(percent: Int): TaxRate {
+            return TaxRate(percent)
+        }
     }
 }

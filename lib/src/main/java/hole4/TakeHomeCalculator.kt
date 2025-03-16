@@ -1,49 +1,30 @@
-package hole4;
+package hole4
 
-import java.util.Arrays;
-import java.util.List;
+class TakeHomeCalculator(private val percent: Int) {
+    fun netAmount(first: Money, vararg rest: Money): Money {
+        val monies = listOf(*rest)
 
-class TakeHomeCalculator {
+        var total = first
 
-    private final int percent;
+        for (next in monies) {
+            total = total.plus(next)
+        }
 
-    TakeHomeCalculator(int percent) {
-        this.percent = percent;
+        val amount = total.value * (percent / 100.0)
+        val tax = Money(amount.toInt(), first.currency)
+
+        if (total.currency != tax.currency) {
+            throw Incalculable()
+        }
+        return Money(total.value - tax.value, first.currency)
     }
 
-    Money netAmount(Money first, Money... rest) {
-
-        List<Money> monies = Arrays.asList(rest);
-
-        Money total = first;
-
-        for (Money next : monies) {
-            total = total.plus(next);
-        }
-
-        Double amount = total.value * (percent / 100d);
-        Money tax = new Money(amount.intValue(), first.currency);
-
-        if (!total.currency.equals(tax.currency)) {
-            throw new Incalculable();
-        }
-        return new Money(total.value - tax.value, first.currency);
-    }
-
-    static class Money {
-        final Integer value;
-        final String currency;
-
-        Money(Integer value, String currency) {
-            this.value = value;
-            this.currency = currency;
-        }
-
-        Money plus(Money other) {
-            if (!other.currency.equals(currency)) {
-                throw new Incalculable();
+    class Money(val value: Int, val currency: String) {
+        fun plus(other: Money): Money {
+            if (other.currency != currency) {
+                throw Incalculable()
             }
-            return new Money(value + other.value, other.currency);
+            return Money(value + other.value, other.currency)
         }
     }
 }

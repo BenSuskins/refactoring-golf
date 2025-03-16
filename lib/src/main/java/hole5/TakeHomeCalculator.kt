@@ -1,31 +1,18 @@
-package hole5;
+package hole5
 
-import java.util.Arrays;
-import java.util.List;
+class TakeHomeCalculator(private val percent: Int) {
+    fun netAmount(first: Money, vararg rest: Money): Money {
+        val monies = listOf(*rest)
 
-import static hole5.Money.money;
+        var total = first
 
-class TakeHomeCalculator {
-
-    private final int percent;
-
-    TakeHomeCalculator(int percent) {
-        this.percent = percent;
-    }
-
-    Money netAmount(Money first, Money... rest) {
-
-        List<Money> monies = Arrays.asList(rest);
-
-        Money total = first;
-
-        for (Money next : monies) {
-            total = total.plus(next);
+        for (next in monies) {
+            total = total.plus(next)
         }
 
-        Double amount = total.value * (percent / 100d);
-        Money tax = money(amount.intValue(), first.currency);
+        val amount = total.value * (percent / 100.0)
+        val tax: Money = Money.money(amount.toInt(), first.currency)
 
-        return total.minus(tax);
+        return total.minus(tax)
     }
 }

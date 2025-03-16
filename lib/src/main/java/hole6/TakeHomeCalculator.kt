@@ -1,27 +1,16 @@
-package hole6;
+package hole6
 
-import java.util.Arrays;
-import java.util.List;
+class TakeHomeCalculator(private val taxRate: TaxRate) {
+    fun netAmount(first: Money, vararg rest: Money): Money {
+        val monies = listOf(*rest)
 
-class TakeHomeCalculator {
+        var total = first
 
-    private final TaxRate taxRate;
-
-    TakeHomeCalculator(TaxRate taxRate) {
-        this.taxRate = taxRate;
-    }
-
-    Money netAmount(Money first, Money... rest) {
-
-        List<Money> monies = Arrays.asList(rest);
-
-        Money total = first;
-
-        for (Money next : monies) {
-            total = total.plus(next);
+        for (next in monies) {
+            total = total.plus(next)
         }
 
-        Money tax = taxRate.apply(total);
-        return total.minus(tax);
+        val tax = taxRate.apply(total)
+        return total.minus(tax)
     }
 }
